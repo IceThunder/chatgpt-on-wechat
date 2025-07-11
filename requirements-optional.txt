@@ -47,3 +47,6 @@ dashscope
 
 # tencentcloud sdk
 tencentcloud-sdk-python>=3.0.0
+
+# mongodb support
+pymongo

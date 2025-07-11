@@ -55,5 +55,28 @@
     "Apilot": {
         "alapi_token": "xxx",
         "morning_news_text_enabled": false
+    },
+    "DialogueArchiver": {
+        "storage_type": "mongodb",
+        "elasticsearch": {
+            "enabled": false,
+            "hosts": [
+                "http://localhost:9200"
+            ],
+            "basic_auth": [
+                "elastic",
+                "changeme"
+            ],
+            "verify_certs": false,
+            "index_name": "dialogues"
+        },
+        "mongodb": {
+            "enabled": true,
+            "uri": "mongodb://localhost:27017/",
+            "username": "mongo",
+            "password": "mongo",
+            "database": "chatgpt-on-wechat",
+            "collection": "dialogues"
+        }
     }
 }
