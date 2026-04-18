@@ -20,3 +20,18 @@ pypdf
 python-docx
 openpyxl
 python-pptx
+
+# dingtalk
+dingtalk_stream
+
+# zhipuai
+zhipuai>=2.0.1
+
+# tongyi qwen new sdk
+dashscope
+
+# tencentcloud sdk
+tencentcloud-sdk-python>=3.0.0
+
+# mongodb support
+pymongo
