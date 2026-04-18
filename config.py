@@ -95,6 +95,7 @@ available_setting = {
     "qwen_node_id": "",  # 流程编排模型用到的id，如果没有用到qwen_node_id，请务必保持为空字符串
     # 阿里灵积(通义新版sdk)模型api key
     "dashscope_api_key": "",
+    "dashscope_app_id": "",
     # Google Gemini Api Key
     "gemini_api_key": "",
     # 语音设置

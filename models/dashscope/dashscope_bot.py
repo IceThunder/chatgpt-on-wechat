@@ -12,7 +12,7 @@ from config import conf, load_config
 from .dashscope_session import DashscopeSession
 import os
 import dashscope
-from dashscope import MultiModalConversation
+from dashscope import MultiModalConversation, Application
 from http import HTTPStatus
 
 
@@ -38,6 +38,7 @@ class DashscopeBot(Bot):
         self.sessions = SessionManager(DashscopeSession, model=conf().get("model") or "qwen3.6-plus")
         self.model_name = conf().get("model") or "qwen3.6-plus"
         self.client = dashscope.Generation
+        self.app_id = conf().get("dashscope_app_id")
         api_key = conf().get("dashscope_api_key")
         if api_key:
             os.environ["DASHSCOPE_API_KEY"] = api_key
@@ -104,6 +105,28 @@ class DashscopeBot(Bot):
         :return: {}
         """
         try:
+            if self.app_id:
+                dashscope.api_key = self.api_key
+                try:
+                    query = session.messages[-1]["content"] if session.messages else ""
+                    response = Application.call(
+                        api_key=self.api_key,
+                        app_id=self.app_id,
+                        prompt=query
+                    )
+                    if response.status_code == HTTPStatus.OK:
+                        return {
+                            "total_tokens": 0,
+                            "completion_tokens": 1,
+                            "content": response.output.text,
+                        }
+                    else:
+                        logger.error(f"[DASHSCOPE_APP] request_id={response.request_id}, code={response.status_code}, message={response.message}")
+                        return {"completion_tokens": 0, "content": response.message, "total_tokens": 0}
+                except Exception as e:
+                    logger.exception(e)
+                    return {"completion_tokens": 0, "content": "应用调用异常，请稍后重试", "total_tokens": 0}
+
             dashscope.api_key = self.api_key
             model = dashscope_models.get(self.model_name, self.model_name)
             if self._is_multimodal_model(self.model_name):
